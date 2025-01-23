@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+  
+ <!-- header section start -->
+
+    <!-- header section end -->
+    <!-- banner section start --> 
+   
+    <div class="banner_section layout_padding">
+    <!-- banner section end -->
+ </div>
+ <br><br><br>
+ 
+ <!-- header section end -->
+ <!-- appointment section start -->
+ <div class="appointment_section">
+  <div class="container">
+    <center>
+     <div class="appointment_box d-flex flex-column justify-content-center align-items-center">
+        <div class="row">
+           <div class="col-md-12">
+              <h1 class="appointment_taital">Patient <span style="color: #0cb7d6;">Login</span></h1>
+           </div>
+        </div>
+        <div class="appointment_section_2">
+           <form method="post">
+              {% csrf_token %}
+              <div class="row justify-content-center">
+                 <!-- Username Input -->
+                 <div class="col-md-4">
+                    <p class="doctorname_text">Username</p>
+                    <input type="text" name="username" class="email_text" placeholder="Enter Username" required>
+                 </div>
+
+                 <!-- Password Input -->
+                 <div class="col-md-4">
+                    <p class="doctorname_text">Password</p>
+                    <input type="password" name="password" class="email_text" placeholder="Enter Password" required>
+                 </div>
+</div>
+<br>
+ <!-- Error Messages -->
+ {% if messages %}
+  <div class="row">
+    <div class="col-12 text-center">
+      {% for message in messages %}
+        <p style="color: red; font-size: 16px; margin: 10px 0;">{{ message }}</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+<br>
+<div class="row">
+  <!-- Submit Button -->
+  <div class="col-12 text-center">
+    <button type="submit" class="btnSubmit btn-outline-info btn-lg" style="padding: 10px 25px; font-size: 18px;">Login</button>
+  </div>
+  
+</div>
+
+              </div>
+           </form>
+        </div>
+     </div>
+  </div>
+</div>
+ 
+{% endblock content %}
+{% comment %} <!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>LazyCoder || sumit</title>
+
+
+  <style type="text/css">
+    body {
+      color: #aa082e;
+      background-color: #b6bde7;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+  <!--- login page for patient by admin(sumit)  ---------->
+  <form method="post">
+    {% csrf_token %}
+    <div class="container register-form">
+      <div class="form">
+        <div class="note">
+          <p>Patient Login Page</p>
+        </div>
+
+        <div class="form-content">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                {% render_field form.username class="form-control" placeholder="Username" %}
+              </div>
+
+            </div>
+            <div class="col-md-6">
+
+              <div class="form-group">
+                {% render_field form.password class="form-control" placeholder="Password" %}
+              </div>
+
+            </div>
+          </div>
+          <button type="submit" class="btnSubmit">Login</button>
+          <div class="text-center">Do not have account? <a href="patientsignup">Signup here</a></div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+
+
+
+  <br><br><br>
+  <!--
+  developed By : sumit kumar
+  facebook : fb.com/sumit.luv
+  youtube : youtube.com/lazycoders
+  -->
+
+
+</body>
+
+</html> {% endcomment %}
