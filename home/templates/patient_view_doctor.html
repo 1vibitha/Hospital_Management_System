@@ -1,0 +1,83 @@
+{% extends 'patient_base.html' %}
+{% block content %}
+{% load static %}
+
+<br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br>
+
+<head>
+  <!-- Bootstrap 3 (Ensure compatibility with patient_base.html) -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  {% comment %} <style>
+
+    /* Fix layout */
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+
+    /* Maintain header top section styles */
+    .header_top_main {
+        font-size: 18px !important;
+        padding: 10px 0 !important;
+    }
+
+    /* Ensure panel title stays consistent */
+    .panel-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style> {% endcomment %}
+
+</head>
+
+<div class="container">
+    <!-- Search Bar -->
+    <form action="/searchdoctor" method="get" style="margin-left:70%;" class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name="query" id="query" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+    {% if doctors %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h6 class="panel-title">Total Doctor List</h6>
+      </div>
+      <table class="table table-hover" id="dev-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Profile Picture</th>
+              <th>Mobile</th>
+              <th>Address</th>
+              <th>Department</th>
+            </tr>
+          </thead>
+          {% for d in doctors %}
+          <tr>
+            <td> {{ d.get_name }}</td>
+            <td> <img src="{{ d.profile_pic.url }}" alt="Profile Pic" height="40px" width="40px" /></td>
+            <td>{{ d.mobile }}</td>
+            <td>{{ d.address }}</td>
+            <td>{{ d.department }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+    </div>
+    {% else %}
+    <br><br><br>
+    <h4 style="text-align: center; color: red;">No Doctor Found !!!</h4>
+    {% endif %}
+</div>
+
+{% endblock content %}

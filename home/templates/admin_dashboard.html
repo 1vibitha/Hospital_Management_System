@@ -1,0 +1,85 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+
+{% include 'admin_dashboard_cards.html' %}
+
+<br><br><br><br>
+
+<!-- Doctors Section -->
+<div class="container">
+    <h2 class="text-center mb-4">Recent <span style="color: #0cb7d6;">Doctors</span></h2>
+    <div class="row">
+        {% for d in doctors %}
+        <div class="col-md-3 mb-4">
+            <div class="card shadow">
+                <img src="{{ d.profile_pic.url }}" alt="Doctor Image" class="card-img-top" style="height: 250px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h4><b>{{ d.get_name }}</b></h4>
+                    <p><strong>Department:</strong> {{ d.department }}</p>
+                    <p><strong>Mobile:</strong> {{ d.mobile }}</p>
+                    {% if d.status %}
+                    <span class="badge" style="background-color: #0cb7d6; color: white;">Permanent</span>
+
+                    {% else %}
+                    <span class="badge bg-warning">On Hold</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<br><br>
+
+<!-- Patients Section -->
+<div class="container">
+    <h2 class="text-center mb-4">Recent <span style="color: #0cb7d6;">Patients</span></h2>
+    <div class="row">
+        {% for p in patients %}
+        <div class="col-md-3 mb-4">
+            <div class="card shadow">
+                <img src="{{ p.profile_pic.url }}" alt="Patient Image" class="card-img-top" style="height: 250px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h4><b>{{ p.get_name }}</b></h4>
+                    <p><strong>Symptoms:</strong> {{ p.symptoms }}</p>
+                    <p><strong>Mobile:</strong> {{ p.mobile }}</p>
+                    <p><strong>Address:</strong> {{ p.address }}</p>
+                    {% if p.status %}
+                    <span class="badge " style="background-color: #0cb7d6; color: white;">Admitted</span>
+                    {% else %}
+                    <span class="badge bg-warning">On Hold</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Custom Styling -->
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .badge {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+</style>
+
+{% endblock content %}

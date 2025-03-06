@@ -59,7 +59,9 @@
       <div class="d-flex justify-content-start align-items-center" style="margin-bottom: 0;"> <!-- Removed bottom margin to reduce space -->
         <!-- Admin Image and Text (Left-aligned) -->
         <div class="d-flex flex-column" style="margin-right: 10px;"> <!-- Reduced margin-right for more compact spacing -->
-           <img src="{% static doctor.profile_pic.url %}" alt="Doctor Profile" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 5px;"> <!-- Smaller image size -->
+          
+           <img src="{{ doctor.profile_pic.url }}" alt="Profile Pic" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 5px;">
+
            <div class="text-center">
               <h6 style="margin: 0; color: white; font-size: 14px;">Doctor</h6> <!-- Smaller font size for Admin text -->
               <h2 style="margin: 0; color: white; font-size: 20px;">{{request.user.first_name}}</h2> <!-- Smaller font size for admin name -->
@@ -99,10 +101,9 @@
      <div class="custom_bg">
         <div class="custom_menu">
            <ul>
-              <li class="active"><a href="{% url 'newadmin:admindashboard' %}">Dashboard</a></li>
-              <li><a href="{% url 'newadmin:admin-doctor' %}">Appointment</a></li>
-              <li><a href="{% url 'newadmin:admin-patient' %}">Doctor</a></li>
-              <li><a href="{% url 'newadmin:admin-appointment' %}">Discharge</a></li>
+              <li class="active"><a href="/doctor-dashboard">Dashboard</a></li>
+              <li><a href="/doctor-patient">Patient</a></li>
+              <li><a href="/doctor-appointment">Appointment</a></li>
            </ul>
         </div>
         <form class="form-inline my-2 my-lg-0">

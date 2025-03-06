@@ -70,44 +70,6 @@ class DoctorForm(forms.ModelForm):
         return address
 
 
-# class DoctorUserForm(forms.ModelForm):
-#     password = forms.CharField(widget=forms.PasswordInput())
-
-#     class Meta:
-#         model = User
-#         fields = ['first_name', 'last_name', 'username', 'email', 'password']
-
-# class DoctorForm(forms.ModelForm):
-#     class Meta:
-#         model = Doctor
-#         fields = ['profile_pic', 'address', 'mobile', 'department', 'experience']
-
-
-
-
-# #for teacher related form
-# class PatientUserForm(forms.ModelForm):
-#     password = forms.CharField(
-#         widget=forms.PasswordInput(),
-#         help_text="Password must be at least 8 characters long and include both letters and numbers."
-#     )
-#     class Meta:
-#         model=User
-#         fields=['first_name','last_name','username','password']
-        
-# class PatientForm(forms.ModelForm):
-#     assignedDoctorId = forms.ModelChoiceField(
-#         queryset=Doctor.objects.all().filter(status=True),
-#         empty_label="Name and Department",
-#         to_field_name="id"  # Change from "user_id" to "id" to ensure the correct reference
-#     )
-    
-#     class Meta:
-#         model = Patient
-#         fields = ['address', 'mobile', 'status', 'symptoms', 'profile_pic']
-
-
-
 from django.core.exceptions import ValidationError
 import re
 
@@ -185,3 +147,34 @@ class PatientForm(forms.ModelForm):
         if profile_pic and not profile_pic.content_type.startswith('image/'):
             raise ValidationError("Profile picture must be a valid image file.")
         return profile_pic
+
+
+
+
+class AppointmentForm(forms.ModelForm):
+    doctorId = forms.ModelChoiceField(
+        queryset=models.Doctor.objects.filter(status=True),
+        empty_label="Select Doctor (Name & Department)"
+    )
+    patientId = forms.ModelChoiceField(
+        queryset=models.Patient.objects.filter(status=True),
+        empty_label="Select Patient (Name & Symptoms)"
+    )
+
+    class Meta:
+        model = models.Appointment
+        fields = ['description', 'status']
+
+class PatientAppointmentForm(forms.ModelForm):
+    doctorId=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Doctor Name and Department", to_field_name="user_id")
+    class Meta:
+        model=models.Appointment
+        fields=['description','status']
+
+
+#for contact us page
+class ContactusForm(forms.Form):
+    Name = forms.CharField(max_length=30)
+    Email = forms.EmailField()
+    Message = forms.CharField(max_length=500,widget=forms.Textarea(attrs={'rows': 3, 'cols': 30}))
+

@@ -2,6 +2,19 @@
 {% load static %}
 
 {% block content %}
+ 
+ <!-- header section start -->
+
+    <!-- header section end -->
+    <!-- banner section start --> 
+   
+    <div class="banner_section layout_padding">
+      <!-- banner section end -->
+   </div>
+   <br><br><br>
+   
+   <!-- header section end -->
+   <!-- appointment section start -->
 <div class="appointment_section">
     <div class="container">
         <center>
@@ -26,20 +39,24 @@
                         </div>
 
                         <br>
+                        <br>
 
                         <!-- Display error messages here -->
                         {% if messages %}
-                            <div class="alert alert-danger">
-                                {% for message in messages %}
-                                    <p>{{ message }}</p>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        
+<div class="container">
+    {% for message in messages %}
+        <div class="alert alert-danger text-center" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+                        <br>
                         <br>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <button type="submit" class="btnSubmit btn-outline-info btn-lg" style="padding: 10px 25px; font-size: 18px;">Login</button>
+                                <button type="submit" class="btn btn-outline-info btn-lg" style="padding: 10px 25px; font-size: 18px;">Login</button>
                             </div>
                         </div>
                     </form>
@@ -49,44 +66,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-{% comment %} {% extends "base.html" %}
-{% block content %}
-<head>
-  <title>Doctor Login</title>
-  <style>
-    body {
-      color: #aa082e;
-      background-color: #b6bde7;
-    }
-    .note {
-      text-align: center;
-      background: linear-gradient(to right, #0072ff, #8811c5);
-      color: white;
-      font-weight: bold;
-      padding: 20px;
-    }
-    .btnSubmit {
-      background: #0062cc;
-      color: white;
-      border: none;
-      border-radius: 15px;
-      padding: 10px 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="note">
-      <p>Doctor Login Page</p>
-    </div>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btnSubmit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="{% url 'doctorsignup' %}">Signup here</a></p>
-  </div>
-</body>
-{% endblock content %} {% endcomment %}
