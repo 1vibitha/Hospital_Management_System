@@ -246,30 +246,7 @@ def afterlogin_view(request):
     return redirect('login') # Redirect back to the login page
 
 
-@login_required(login_url='doctor_login')
-@user_passes_test(is_doctor)
-def doctor_dashboard_view(request):
-    #for three cards
-    doctor = models.Doctor.objects.get(user_id=request.user.id) 
-    patientcount=models.Patient.objects.filter(status=True,assignedDoctorId=doctor.id).count()
-    appointmentcount=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id).count()
-    patientdischarged=models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
 
-    #for  table in doctor dashboard
-    appointments=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id).order_by('-id')
-    patientid=[]
-    for a in appointments:
-        patientid.append(a.patientId)
-    patients=models.Patient.objects.all().filter(status=True,user_id__in=patientid).order_by('-id')
-    appointments=zip(appointments,patients)
-    mydict={
-    'patientcount':patientcount,
-    'appointmentcount':appointmentcount,
-    'patientdischarged':patientdischarged,
-    'appointments':appointments,
-    'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
-    }
-    return render(request,'doctor_dashboard.html',context=mydict)
 
 @login_required(login_url='patientlogin')
 @user_passes_test(is_patient)
@@ -294,15 +271,6 @@ def patient_dashboard_view(request):
     }
     return render(request, 'patient_dashboard.html', mydict)
 
-
-
-@login_required(login_url='doctorlogin')
-@user_passes_test(is_doctor)
-def doctor_patient_view(request):
-    mydict={
-    'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
-    }
-    return render(request,'doctor_patient.html',context=mydict)
 
 
 
@@ -490,6 +458,107 @@ def admin_approve_appointment_view(request):
     return render(request,'admin_approve_appointment.html',{'appointments':appointments})
 
 #--------------------------------------admin end ----------------------------------------------------------------------#
+#--------------------------------------doctor stat---------------------------------------------------------------------#
+
+@login_required(login_url='doctor_login')
+@user_passes_test(is_doctor)
+def doctor_dashboard_view(request):
+    #for three cards
+    doctor = models.Doctor.objects.get(user_id=request.user.id) 
+    patientcount=models.Patient.objects.filter(status=True,assignedDoctorId=doctor.id).count()
+    appointmentcount = models.Appointment.objects.filter(status=True, doctorId=doctor.id).count()
+    patientdischarged=models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
+
+    #for  table in doctor dashboard
+    appointments=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id).order_by('-id')
+    patientid=[]
+    for a in appointments:
+        patientid.append(a.patientId)
+    patients=models.Patient.objects.all().filter(status=True,user_id__in=patientid).order_by('-id')
+    appointments=zip(appointments,patients)
+    mydict={
+    'patientcount':patientcount,
+    'appointmentcount':appointmentcount,
+    'patientdischarged':patientdischarged,
+    'appointments':appointments,
+    'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
+    }
+    return render(request,'doctor_dashboard.html',context=mydict)
+
+
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_patient_view(request):
+    mydict={
+    'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
+    }
+    return render(request,'doctor_patient.html',context=mydict)
+
+
+
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_view_patient_view(request):
+    patients = models.Patient.objects.filter(status=True, assignedDoctorId=request.user.doctor.id)
+    doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
+    return render(request,'doctor_view_patient.html',{'patients':patients,'doctor':doctor})
+
+
+
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_view_discharge_patient_view(request):
+    dischargedpatients=models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name)
+    doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
+    return render(request,'doctor_view_discharge_patient.html',{'dischargedpatients':dischargedpatients,'doctor':doctor})
+
+
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_view_appointment_view(request):
+    # # Step 1: Fetch the logged-in doctor
+    # try:
+    #     doctor = models.Doctor.objects.get(user_id=request.user.id)
+    # except models.Doctor.DoesNotExist:
+    #     return render(request, 'doctor_view_appointment.html', {'error': 'Doctor profile not found.'})
+
+    # # Step 2: Fetch appointments for this doctor
+    # appointments = models.Appointment.objects.filter(status=True, doctorId=doctor.id)
+
+    # # Step 3: Fetch patient details linked to these appointments
+    # patient_ids = appointments.values_list('patientId', flat=True)  # Get only patient IDs from appointments
+    # patients = models.Patient.objects.filter(user_id__in=patient_ids)
+
+    # # Step 4: Ensure correct mapping between appointments and patients
+    # patient_dict = {p.user.id: p for p in patients}  # Dictionary mapping patient user_id to patient object
+    # appointments_with_patients = [(a, patient_dict.get(a.patientId)) for a in appointments if a.patientId in patient_dict]
+
+    # # Step 5: Render the template
+
+    # return render(request, 'doctor_view_appointment.html', {
+    #     'appointments': appointments_with_patients,
+    #     'doctor': doctor
+    # })
+    doctor = models.Doctor.objects.get(user_id=request.user.id)
+    appointments = models.Appointment.objects.filter(status=True, doctorId=doctor.id)
+    return render(request, 'doctor_view_appointment.html', {
+        'appointments': appointments,
+        'doctor': doctor
+    })
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_delete_appointment_view(request):
+    doctor = models.Doctor.objects.get(user_id=request.user.id)
+    appointments = models.Appointment.objects.filter(status=True, doctorId=doctor.id)
+    return render(request, 'doctor_delete_appointment.html', {
+        'appointments': appointments,
+        'doctor': doctor
+    })
+
+
+
+#-----------------------------------------doctor end -------------------------------------------------------------------------#
+#----------------------------------------- patient start -------------------------------------------------------------------------#
 
 
 @login_required(login_url='patientlogin')
